@@ -8,15 +8,15 @@ If the table is already created in the database, you can skip this step.
 
 Otherwise, [follow this recipe to design and create the SQL schema for your table](https://journey.makers.tech/pages/single-table-design-recipe-template).
 
-*In this template, we'll use an example table `students`*
+*In this template, we'll use an example table `books`*
 
 ```
 # EXAMPLE
 
-Table: students
+Table: books
 
 Columns:
-id | name | cohort_name
+id | title | author_name
 ```
 
 ## 2. Create Test SQL seeds
@@ -35,13 +35,13 @@ If seed data is provided (or you already created it), you can skip this step.
 -- so we can start with a fresh state.
 -- (RESTART IDENTITY resets the primary key)
 
-TRUNCATE TABLE students RESTART IDENTITY; -- replace with your own table name.
+TRUNCATE TABLE books RESTART IDENTITY; -- replace with your own table name.
 
 -- Below this line there should only be `INSERT` statements.
 -- Replace these statements with your own seed data.
 
-INSERT INTO students (name, cohort_name) VALUES ('David', 'April 2022');
-INSERT INTO students (name, cohort_name) VALUES ('Anna', 'May 2022');
+INSERT INTO books (title, author_name) VALUES ( 'Nineteen Eighty-Four', 'George Orwell');
+INSERT INTO books (title, author_name) VALUES ('Anna', 'May 2022');
 ```
 
 Run this SQL file on the database to truncate (empty) the table, and insert the seed data. Be mindful of the fact any existing records in the table will be deleted.
@@ -56,16 +56,16 @@ Usually, the Model class name will be the capitalised table name (single instead
 
 ```python
 # EXAMPLE
-# Table name: students
+# Table name: books
 
 # Model class
 # (in lib/student.py)
-class Student
+class Book
 
 
 # Repository class
 # (in lib/student_repository.py)
-class StudentRepository
+class BookRepository
 
 ```
 
@@ -75,16 +75,16 @@ Define the attributes of your Model class. You can usually map the table columns
 
 ```python
 # EXAMPLE
-# Table name: students
+# Table name: books
 
 # Model class
 # (in lib/student.py)
 
-class Student:
+class Book:
     def __init__(self):
         self.id = 0
-        self.name = ""
-        self.cohort_name = ""
+        self.title = ""
+        self.author_name = ""
 
         # Replace the attributes by your own columns.
 
@@ -94,10 +94,10 @@ class Student:
 #
 # >>> student = Student()
 # >>> student.name = "Will"
-# >>> student.cohort_name = "September Devs"
+# >>> student.author_name = "September Devs"
 # >>> student.name
 # 'Will'
-# >>> student.cohort_name
+# >>> student.author_name
 # 'September Devs'
 
 ```
@@ -110,18 +110,18 @@ Using comments, define the method signatures (arguments and return value) and wh
 
 ```python
 # EXAMPLE
-# Table name: students
+# Table name: books
 
 # Repository class
 # (in lib/student_repository.py)
 
-class StudentRepository():
+class BookRepository():
 
     # Selecting all records
     # No arguments
     def all():
         # Executes the SQL query:
-        # SELECT id, name, cohort_name FROM students;
+        # SELECT id, name, author_name FROM books;
 
         # Returns an array of Student objects.
 
@@ -129,7 +129,7 @@ class StudentRepository():
         # One argument: the id (number)
     def find(id):
         # Executes the SQL query:
-        # SELECT id, name, cohort_name FROM students WHERE id = $1;
+        # SELECT id, name, author_name FROM books WHERE id = $1;
 
         # Returns a single Student object.
 
@@ -156,32 +156,32 @@ These examples will later be encoded as Pytest tests.
 # EXAMPLES
 
 # 1
-# Get all students
+# Get all books
 
-repo = StudentRepository()
+repo = BookRepository()
 
-students = repo.all()
+books = repo.all()
 
-len(students) # =>  2
+len(books) # =>  2
 
-students[0].id # =>  1
-students[0].name # =>  'David'
-students[0].cohort_name # =>  'April 2022'
+books[0].id # =>  1
+books[0].title # =>  'David'
+books[0].author_title # =>  'April 2022'
 
-students[1].id # =>  2
-students[1].name # =>  'Anna'
-students[1].cohort_name # =>  'May 2022'
+books[1].id # =>  2
+books[1].title # =>  'Anna'
+books[1].author_name # =>  'May 2022'
 
 # 2
 # Get a single student
 
-repo = StudentRepository()
+repo = BookRepository()
 
 student = repo.find(1)
 
-student.id # =>  1
-student.name # =>  'David'
-student.cohort_name # =>  'April 2022'
+book.id # =>  1
+book.title # =>  'David'
+book.author_name # =>  'April 2022'
 
 # Add more examples for each method
 ```

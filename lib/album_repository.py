@@ -7,6 +7,6 @@ class AlbumRepository:
 
     def all(self):
         rows = self._connection.execute("SELECT * FROM albums")
-        return [Album(row[id], row["title"], row["release_year"], row["artist_id"])
+        return [Album(row["id"], row["title"], row["release_year"], row["artist_id"])
         for row in rows
         ] 
