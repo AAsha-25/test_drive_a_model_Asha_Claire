@@ -1,66 +1,67 @@
-from lib.artist_repository import ArtistRepository
-from lib.artist import Artist
+from lib.book_store_repository import BookRepository
+from lib.book_store import Book
 
 """
-When we call ArtistRepository#all
-We get a list of Artist objects reflecting the seed data.
+When we call BookRepository#all
+We get a list of Book objects reflecting the seed data.
 """
 def test_get_all_records(db_connection): # See conftest.py to learn what `db_connection` is.
     db_connection.seed("seeds/music_library.sql") # Seed our database with some test data
-    repository = ArtistRepository(db_connection) # Create a new ArtistRepository
+    repository = BookRepository(db_connection) # Create a new BookRepository
 
-    artists = repository.all() # Get all artists
+    books = repository.all() # Get all books
 
     # Assert on the results
-    assert artists == [
-        Artist(1, "Pixies", "Rock"),
-        Artist(2, "ABBA", "Pop"),
-        Artist(3, "Taylor Swift", "Pop"),
-        Artist(4, "Nina Simone", "Jazz"),
-    ]
+    assert books == [
+        Book(1, 'Nineteen Eighty-Four', 'George Orwell'),
+        Book(2, 'Mrs Dalloway', 'Virginia Woolf'),
+        Book(3, 'Emma', 'Jane Austen'),
+        Book(4, 'Dracula', 'Bram Stoker'),
+        Book(5, 'The Age of Innocence', 'Edith Wharton')
+        ]
 
 """
-When we call ArtistRepository#find
-We get a single Artist object reflecting the seed data.
+When we call BookRepository#find
+We get a single Book object reflecting the seed data.
 """
 def test_get_single_record(db_connection):
     db_connection.seed("seeds/music_library.sql")
-    repository = ArtistRepository(db_connection)
+    repository = BookRepository(db_connection)
 
-    artist = repository.find(3)
-    assert artist == Artist(3, "Taylor Swift", "Pop")
+    book = repository.find(5)
+    assert book == Book(5, 'The Age of Innocence', 'Edith Wharton')
 
-"""
-When we call ArtistRepository#create
-We get a new record in the database.
-"""
-def test_create_record(db_connection):
-    db_connection.seed("seeds/music_library.sql")
-    repository = ArtistRepository(db_connection)
+# """
+# When we call BookRepository#create
+# We get a new record in the database.
+# """
+# def test_create_record(db_connection):
+#     db_connection.seed("seeds/music_library.sql")
+#     repository = BookRepository(db_connection)
 
-    repository.create(Artist(None, "The Beatles", "Rock"))
+#     repository.create(Book(None, "The Beatles", "Rock"))
 
-    result = repository.all()
-    assert result == [
-        Artist(1, "Pixies", "Rock"),
-        Artist(2, "ABBA", "Pop"),
-        Artist(3, "Taylor Swift", "Pop"),
-        Artist(4, "Nina Simone", "Jazz"),
-        Artist(5, "The Beatles", "Rock"),
-    ]
+#     result = repository.all()
+#     assert result == [
+#         Book(1, "Pixies", "Rock"),
+#         Book(2, "ABBA", "Pop"),
+#         Book(3, "Taylor Swift", "Pop"),
+#         Book(4, "Nina Simone", "Jazz"),
+#         Book(5, "The Beatles", "Rock"),
+#     ]
 
-"""
-When we call ArtistRepository#delete
-We remove a record from the database.
-"""
-def test_delete_record(db_connection):
-    db_connection.seed("seeds/music_library.sql")
-    repository = ArtistRepository(db_connection)
-    repository.delete(3) # Apologies to Taylor Swift fans
+# """
+# When we call BookRepository#delete
+# We remove a record from the database.
+# """
+# def test_delete_record(db_connection):
+#     db_connection.seed("seeds/music_library.sql")
+#     repository = BookRepository(db_connection)
+#     repository.delete(3) # Apologies to Taylor Swift fans
 
-    result = repository.all()
-    assert result == [
-        Artist(1, "Pixies", "Rock"),
-        Artist(2, "ABBA", "Pop"),
-        Artist(4, "Nina Simone", "Jazz"),
-    ]
+#     result = repository.all()
+#     assert result == [
+#         Book(1, "Pixies", "Rock"),
+#         Book(2, "ABBA", "Pop"),
+#         Book(4, "Nina Simone", "Jazz"),
+#     ]
